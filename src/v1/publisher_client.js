@@ -59,6 +59,10 @@ class PublisherClient {
     opts = opts || {};
     this._descriptors = {};
 
+    console.log(`=== Debug information ===
+opts: ${JSON.stringify(opts)}
+global.isBrowser: ${global.isBrowser}`);
+
     if (global.isBrowser) {
       // If we're in browser, we use gRPC fallback.
       opts.fallback = true;
@@ -118,6 +122,14 @@ class PublisherClient {
       'protos',
       'protos.json'
     );
+    console.log(`nodejsProtoPath: ${nodejsProtoPath}
+opts.fallback: ${opts.fallback}`);
+
+    const param = opts.fallback
+      ? require('../../protos/protos.json')
+      : nodejsProtoPath;
+    console.log(`loadProto arg: ${param}
+ === End of debug information ===`);
     const protos = gaxGrpc.loadProto(
       opts.fallback ? require('../../protos/protos.json') : nodejsProtoPath
     );
